@@ -121,5 +121,10 @@ def get_user_progress(user_id):
         'correct_answers': correct_answers
     })
 
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({'message': 'Flask API is running'})
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
