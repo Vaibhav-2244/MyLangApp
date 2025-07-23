@@ -15,7 +15,7 @@ def register():
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("INSERT INTO Users (username, password, email, proficiency_level, learning_goal) VALUES (?, ?, ?, ?, ?)",
-                   (username, password, proficiency_level, learning_goal))
+                   (username, password, email, proficiency_level, learning_goal))
     conn.commit()
     conn.close()
     return jsonify({'message': 'User registered successfully'}), 201
