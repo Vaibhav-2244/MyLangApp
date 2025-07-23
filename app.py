@@ -8,7 +8,7 @@ def register():
     data = request.json
     username = data.get('username')
     password = data.get('password')
-    email = data.get('email', '')
+    email = data.get('email')
     proficiency_level = data.get('proficiency_level', 'beginner')
     learning_goal = data.get('learning_goal', 'general')
 
