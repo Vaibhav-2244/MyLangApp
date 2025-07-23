@@ -2,23 +2,30 @@ from flask import Flask, request, jsonify
 from config import get_connection
 
 app = Flask(__name__)
-
 @app.route('/register', methods=['POST'])
 def register():
     data = request.json
-    username = data.get('username')
-    password = data.get('password')
-    email = data.get('email')
+    try:
+        username = data['username']  # ✅ required
+        password = data['password']  # ✅ required
+        email = data['email']        # ✅ required
+    except KeyError as e:
+        return jsonify({'error': f'Missing required field: {e.args[0]}'}), 400
+
+    # Optional fields with defaults
     proficiency_level = data.get('proficiency_level', 'beginner')
     learning_goal = data.get('learning_goal', 'general')
 
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("INSERT INTO Users (username, password, email, proficiency_level, learning_goal) VALUES (?, ?, ?, ?, ?)",
-                   (username, password, email, proficiency_level, learning_goal))
+    cursor.execute(
+        "INSERT INTO Users (username, password, email, proficiency_level, learning_goal) VALUES (?, ?, ?, ?, ?)",
+        (username, password, email, proficiency_level, learning_goal)
+    )
     conn.commit()
     conn.close()
     return jsonify({'message': 'User registered successfully'}), 201
+
 
 @app.route('/login', methods=['POST'])
 def login():
